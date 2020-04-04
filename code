@@ -1,8 +1,5 @@
 from random import randint
 
-
-
-
 class Node():
     """A node class for A* Pathfinding"""
 
@@ -100,9 +97,7 @@ def astar(maze, start, end):
             # Add the child to the open list
             open_list.append(child)
 
-def create_maze():
-    
-    n = int(input("Enter the size of the maze: "))
+def create_maze(n):
     
     matrix = [] 
     
@@ -111,31 +106,68 @@ def create_maze():
         a =[] 
         for j in range(n):      # A for loop for column entries 
             a.append(0) 
-            matrix.append(a)
+    
+        matrix.append(a)
+    
     x=int(input("Enter the maximum number of obstruction in a row: "))
     for i in range(n):          # A for loop for row entries 
-        for k in range(x):      # A for loop for column entries
-            j=randint(0,n)
-            matrix[i-1][j-1]=1
-            
+        for k in range(x):      # A for loop for total number of obstacles
+            j=randint(0,n-1)
+            matrix[i][j]=1
+    
     return matrix
 
-
-
 def main():
-
-    maze = create_maze()
     
-    x1=int(input("Enter x value for start node: "))
-    y1=int(input("Enter y value for start node: "))
-    x2=int(input("Enter x value for end node: "))
-    y2=int(input("Enter y value for end node: "))
+    n = int(input("Enter the size of the maze: "))
 
-    start = (x1,y1)
-    end = (x2,y2)
-
-    path = astar(maze, start, end)
-    print(path)
+    maze = create_maze(n)
+    
+    i=0
+    
+    while i!=1:
+        c=int(input("""\
+                *******Menu********
+                1) To see the maze
+                2) To get the optimal path
+                 
+                 Enter your choise: 
+                """))
+        if c==1:
+            for i in range(n):
+                print("\t\t",maze[i])
+                
+        elif c==2:
+            x1=int(input("\t\t\t\tEnter x value for start node: "))
+            y1=int(input("\t\t\t\tEnter y value for start node: "))
+            x2=int(input("\t\t\t\tEnter x value for end node: "))
+            y2=int(input("\t\t\t\tEnter y value for end node: "))
+            
+            start = (x1,y1)
+            end = (x2,y2)
+            
+            path = astar(maze, start, end)
+            print("\n\t\tThe optimal path for the given maze :\n\t\t",path)
+            for i,j in path:
+                maze[i][j]=7
+                
+            maze[x1][y1]=5
+            maze[x2][y2]=6
+            
+            print("""\n5
+                  In the maze given below
+                  '5' represents start node
+                  '6' represents end node
+                  '7' represents path
+            """)
+            
+            for i in range(n):
+                print("\t\t  ",maze[i])
+            i=1
+            
+        else:
+            print("Invalid Input....")
+    
 
 
 if __name__ == '__main__':
